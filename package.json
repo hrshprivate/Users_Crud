@@ -1,0 +1,30 @@
+{
+  "name": "internship-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.org/6728945/internship-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://bitbucket.org/6728945/internship-backend/issues"
+  },
+  "homepage": "https://bitbucket.org/6728945/internship-backend#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-validator": "^6.14.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.3.4",
+    "nodemon": "^2.0.16"
+  }
+}

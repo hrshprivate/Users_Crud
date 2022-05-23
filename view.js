@@ -52,8 +52,8 @@ class View {
   async getUsers(req, res) {
     try {
       const Options = {
-        page: parseInt(req.query.page),
-        limit: parseInt(req.query.limit),
+        page: req.query.page,
+        limit: req.query.limit,
       }
 
       User.find()

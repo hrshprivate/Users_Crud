@@ -1,8 +1,8 @@
 const Router = require('express')
 const { check } = require('express-validator')
 
-const View = require('./view')
-const Permission = require('./permissions/authperm')
+const View = require('../controllers/view')
+const Permission = require('../permissions/authperm')
 
 const router = new Router()
 

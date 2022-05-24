@@ -1,8 +1,8 @@
 const bcrypt = require('bcryptjs')
 const { validationResult } = require('express-validator')
 
-const User = require('./models/user')
-const jwt_token = require('./jwt')
+const User = require('../models/user')
+const jwt_token = require('../jwt')
 
 class View {
   async registration(req, res) {

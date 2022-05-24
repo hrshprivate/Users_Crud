@@ -17,6 +17,7 @@ router.post(
   ],
   View.registration
 )
+
 router.post('/login', View.login)
 router.get('/users', View.getUsers)
 router.get('/users/:id', View.getOneUser)

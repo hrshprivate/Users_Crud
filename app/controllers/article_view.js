@@ -1,9 +1,8 @@
-const bcrypt = require('bcryptjs')
 const { validationResult } = require('express-validator')
 
 const User = require('../models/user')
 const Article = require('../models/article')
-const jwt_token = require('../jwt')
+const token = require('../verify')
 
 class ArticleView {
   async createArticle(req, res) {
@@ -13,7 +12,7 @@ class ArticleView {
         return res.status(400).json({ message: 'Creating errors', error })
       }
       const { title, content, user } = req.body
-      const fut_user = await User.findOne({ username: user })
+      const fut_user = await User.findOne({ _id: user })
       console.log(fut_user)
       if (fut_user) {
         const article = new Article({
@@ -38,8 +37,16 @@ class ArticleView {
         page: req.query.page,
         limit: req.query.limit,
       }
-      console.log(Article)
-      Article.find({ is_published: true, user: 'ADMIN' })
+      const data = token.act_token(req, res)
+      const user_ok = await User.findById(data.id)
+      if (user_ok.role === 'ADMIN') {
+        const all_art = await Article.find().populate('user')
+        return res.status(200).json(all_art)
+      }
+      Article.find({
+        $or: [{ is_published: true }, { user: data.id }],
+      })
+        .populate('user')
         .skip(Options.page * Options.limit)
         .limit(Options.limit)
         .exec((err, inf) => {

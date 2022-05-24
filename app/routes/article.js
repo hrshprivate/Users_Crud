@@ -1,9 +1,8 @@
 const Router = require('express')
 const { check } = require('express-validator')
 
-const View = require('../controllers/view')
 const ArtView = require('../controllers/article_view')
-const Permission = require('../permissions/authperm')
+const ArtPermission = require('../permissions/authperm')
 
 const art_router = new Router()
 
@@ -16,9 +15,9 @@ art_router.post(
   ArtView.createArticle
 )
 
-art_router.get('/article', ArtView.getArticles)
-art_router.get('/article/:id', ArtView.getOneArticle)
-art_router.put('/article', ArtView.updateArticle)
-art_router.delete('/article/:id', ArtView.deleteArticle)
+art_router.get('/article', ArtPermission.AuthOnly, ArtView.getArticles)
+art_router.get('/article/:id', ArtPermission.AuthOnly, ArtView.getOneArticle)
+art_router.put('/article', ArtPermission.AuthOnly, ArtView.updateArticle)
+art_router.delete('/article/:id', ArtPermission.AuthOnly, ArtView.deleteArticle)
 
 module.exports = art_router

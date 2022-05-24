@@ -11,7 +11,7 @@ class View {
       if (!error.isEmpty()) {
         return res.status(400).json({ message: 'Registrations errors', error })
       }
-      const { username, password } = req.body
+      const { username, password, firstName, lastName, role } = req.body
       const pos_user = await User.findOne({ username: username })
       if (pos_user) {
         console.log(username)
@@ -21,6 +21,9 @@ class View {
       const user = new User({
         username: username,
         password: hash_p,
+        firstName: firstName,
+        lastName: lastName,
+        role: role,
       })
       await user.save()
       return res.json({ message: 'User was created!' })

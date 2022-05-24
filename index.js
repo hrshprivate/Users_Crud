@@ -4,12 +4,14 @@ const cors = require('cors')
 require('dotenv').config()
 
 const routerauth = require('./app/routes/auth')
+const routerart = require('./app/routes/article')
 
 const app = express()
 
 app.use(express.json())
 app.use(cors())
 app.use('/auth', routerauth)
+app.use('/main', routerart)
 
 const PORT = process.env.PORT
 const DB_URL = process.env.DB_URL

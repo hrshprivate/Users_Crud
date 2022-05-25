@@ -40,13 +40,16 @@ class ArticleView {
       const data = token.act_token(req, res)
       const user_ok = await User.findById(data.id)
       if (user_ok.role === 'ADMIN') {
-        const all_art = await Article.find().populate('user')
+        const all_art = await Article.find()
+          .select('+is_published +reason')
+          .populate('user')
         return res.status(200).json(all_art)
       }
       Article.find({
         $or: [{ is_published: true }, { user: data.id }],
       })
         .populate('user')
+        .select('+reason')
         .skip(Options.page * Options.limit)
         .limit(Options.limit)
         .exec((err, inf) => {
@@ -57,16 +60,16 @@ class ArticleView {
         })
     } catch (e) {
       console.log(e)
-      res.status(400).json({ message: 'Article error' })
+      return res.status(400).json({ message: 'Article error' })
     }
   }
 
   async getOneArticle(req, res) {
     try {
       const id = req.params.id
-      const article = await Article.findById(id)
+      const article = await Article.findById(id).populate('user')
       if (article) {
-        res.json(article)
+        return res.json(article)
       }
     } catch (e) {
       console.log(e)
@@ -78,9 +81,25 @@ class ArticleView {
     try {
       const id = req.body._id
       const data = req.body
-      const upd_article = await Article.findByIdAndUpdate(id, data)
-      if (upd_article) {
-        res.json(upd_article)
+      const inf = token.act_token(req, res)
+      const user = await User.findById(inf.id)
+      if (user.role === 'ADMIN') {
+        const upd_article = await Article.findByIdAndUpdate(id, data)
+          .select('+is_published')
+          .populate('user')
+        return res.json(upd_article)
+      }
+      const is_pub = await Article.findById(id).select('+is_published')
+      console.log(is_pub.is_published)
+      if (is_pub.is_published) {
+        const upd_article = await Article.findByIdAndUpdate(id, data).populate(
+          'user'
+        )
+        if (upd_article) {
+          return res.json(upd_article)
+        }
+      } else {
+        res.status(400).json({ message: 'Update error' })
       }
     } catch (e) {
       console.log(e)

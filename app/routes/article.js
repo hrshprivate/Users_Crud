@@ -10,8 +10,9 @@ art_router.post(
   '/article',
   [
     check('title', 'Username can not be empty').notEmpty(),
-    check('user', 'Password must be more then 8 symbols').notEmpty(),
+    check('user', 'Can not be empty').notEmpty(),
   ],
+  ArtPermission.AuthOnly,
   ArtView.createArticle
 )
 
